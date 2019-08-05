@@ -5,6 +5,7 @@
 // Libraries for web server & database
 #include <ArduinoJson.h>
 #include <SPIFFS.h>
+#include <SD.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
@@ -46,15 +47,15 @@ void setup() {
   // On 404 error
   server.onNotFound(handleError);
   
-  // Index
+  // Pages
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/index.html","text/html");
   });
+  server.on("/about", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/about.html","text/html");
+  });
 
   // Routes to load site content
-  server.on("/css/animate.css", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/css/animate.css", "text/css");
-  });
   server.on("/css/site.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/css/site.css", "text/css");
   });
@@ -66,14 +67,14 @@ void setup() {
   server.on("/media/banner.jpg", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/media/banner.jpg", "image/jpeg");
   });
-  server.on("/media/radiolocal.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/media/radiolocal.png", "image/png");
+  server.on("/media/rl.jpg", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/media/rl.jpg", "image/jpeg");
   });
-  server.on("/media/radiolocal-inverted.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/media/radiolocal-inverted.png", "image/png");
+  server.on("/media/rlinvert.jpg", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/media/rlinvert.jpg", "image/jpeg");
   });
-  server.on("/media/radiolocal-inverted-small.png", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/media/radiolocal-inverted-small.png", "image/png");
+  server.on("/media/rlinvertsmall.jpg", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/media/rlinvertsmall.jpg", "image/jpeg");
   });
   
   server.begin();

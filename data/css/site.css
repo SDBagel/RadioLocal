@@ -20,6 +20,7 @@ nav {
 }
 
 nav img {
+  float: left;
   height: 2rem;
   margin: 1rem 0;
 }
@@ -29,7 +30,7 @@ nav img {
 }
 
 nav a {
-  color: #93a3b1;
+  color: #78a1bb;
   font-size: 1.2rem;
   padding: 1rem;
   transition-duration: 0.3s;
@@ -67,7 +68,7 @@ nav button:hover {
   overflow: hidden;
 }
 
-.block-header img {
+.block-header > img {
   filter: blur(10px);
   min-width: 100%;
 }
@@ -87,6 +88,14 @@ nav button:hover {
   border-radius: 0.5rem;
 }
 
+.block-header h1 img {
+  display: inline-block;
+  height: 100%;
+  margin: auto;
+  margin-top: 0.1rem;
+  vertical-align: middle;
+}
+
 .container {
   margin: 0 2rem;
 }
@@ -98,6 +107,11 @@ br {
 a {
   color: #78a1bb;
   text-decoration: underline;
+  transition-duration: 0.3s;
+}
+
+a:hover {
+  color: #32292f;
 }
 
 button {
@@ -144,9 +158,12 @@ button {
   font-size: 1rem;
 }
 
+.card button {
+  width: 70%;
+}
+
 .card button:hover {
-  border-color: #93a3b1;
-  color: #78a1bb;
+  border-color: #32292f;
 }
 
 .card h2 {
@@ -170,6 +187,22 @@ button {
   text-align: center;
 }
 
+form {
+  position: relative;
+  text-align: left;
+}
+
+form input {
+  position: absolute;
+  left: 5rem;
+  right: 0;
+  width: 60%;
+}
+
+#register {
+  margin-top: 10%;
+}
+
 footer {
   background-color: #32292f;
   min-height: 10rem;
@@ -189,6 +222,12 @@ footer > p {
   .card .text {
     margin-left: 6rem;
   }
+  .no-img {
+    margin: 0 10% !important;
+  }
+  form input {
+    width: 75%;
+  }
 }
 
 @media screen and (min-width: 600px) {
@@ -205,6 +244,9 @@ footer > p {
   }
   nav {
     padding: 0 3rem;
+  }
+  form input {
+    width: 80%;
   }
   footer {
     padding: 2rem 3rem;
@@ -259,7 +301,7 @@ footer > p {
     margin: auto;
   }
   .card .text {
-    margin: 0;
+    margin: 5% 10%;
   }
   .paragraph {
     padding: 3rem 6rem;
