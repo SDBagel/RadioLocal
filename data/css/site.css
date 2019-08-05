@@ -1,0 +1,279 @@
+html {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+}
+
+nav {
+  background-color: #32292f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  padding: 0 2rem;
+}
+
+nav img {
+  height: 2rem;
+  margin: 1rem 0;
+}
+
+#logo {
+  display: none;
+}
+
+nav a {
+  color: #93a3b1;
+  font-size: 1.2rem;
+  padding: 1rem;
+  transition-duration: 0.3s;
+}
+
+nav a:hover {
+  color: #f4f4f4;
+}
+
+nav #links {
+  display: none;
+  flex-direction: column;
+  flex: 1 1;
+  align-items: center;
+}
+
+nav button {
+  background-color: #32292f;
+  border-color: #f4f4f4;
+  color: #f4f4f4;
+  float: right;
+  margin-left: 1rem;
+}
+
+nav button:hover {
+  border-color: #78a1bb;
+  color: #78a1bb;
+}
+
+.block-header {
+  position: relative;
+  z-index: -1;
+  min-width: 100%;
+  height: 25rem;
+  overflow: hidden;
+}
+
+.block-header img {
+  filter: blur(10px);
+  min-width: 100%;
+}
+
+.block-header h1 {
+  padding: 0.5rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 40%;
+  font-size: 3rem;
+  width: 18rem;
+  margin: auto;
+  text-align: center;
+  color: #32292f;
+  background-color: #fff;
+  border-radius: 0.5rem;
+}
+
+.container {
+  margin: 0 2rem;
+}
+
+br {
+  clear: both;
+}
+
+a {
+  color: #78a1bb;
+  text-decoration: underline;
+}
+
+button {
+  box-shadow: none;
+  border: solid 2px;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  margin: 0.6rem 0;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 100;
+  transition-duration: 0.3s;
+}
+
+.header {
+  display: flexbox;
+  margin-top: 4rem;
+  position: relative;
+}
+
+.header h2 {
+  color: #32292f;
+  font-size: 1.5rem;
+  font-weight: 100;
+  text-align: center;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem 1rem;
+  margin-top: 1rem;
+}
+
+.card img {
+  display: none;
+  float: left;
+  width: 5rem;
+}
+
+.card button {
+  background-color: #fff;
+  border-color: #78a1bb;
+  font-size: 1rem;
+}
+
+.card button:hover {
+  border-color: #93a3b1;
+  color: #78a1bb;
+}
+
+.card h2 {
+  color: #424d63bb !important;
+  margin: 0;
+}
+
+.card p {
+  margin: 0.2rem 0;
+}
+
+.card .text {
+  color: #93a3b1;
+  margin: 0;
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 2rem;
+  padding: 1rem 0.8rem;
+  text-align: center;
+}
+
+footer {
+  background-color: #32292f;
+  min-height: 10rem;
+  margin-top: 5rem;
+  padding: 2rem;
+  color: #f4f4f4;
+}
+
+footer > p {
+  color: #93a3b1;
+}
+
+@media screen and (min-width: 400px) {
+  .card img {
+    display: unset;
+  }
+  .card .text {
+    margin-left: 6rem;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .block-header {
+    height: 20rem;
+  }
+  .block-header h1 {
+    top: 45%;
+    width: 35rem;
+  }
+  .container {
+    width: 30rem;
+    margin: auto;
+  }
+  nav {
+    padding: 0 3rem;
+  }
+  footer {
+    padding: 2rem 3rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  nav #menu-button {
+    display: none;
+  }
+  nav #links {
+    display: block;
+    line-height: 4rem;
+    float: right;
+  }
+  nav {
+    padding: 0 6rem;
+  }
+  .paragraph {
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    padding: 2rem 2rem;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #logo {
+    display: unset;
+  }
+  #logo-small {
+    display: none;
+  }
+  .container {
+    width: 80%;
+  }
+  nav {
+    padding: 0 8rem;
+  }
+  section {
+    display: flex;
+    flex-wrap: nowrap;
+    flex: 1 1;
+  }
+  .card {
+    margin: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+  .card img {
+    float: unset;
+    width: 10rem;
+    margin: auto;
+  }
+  .card .text {
+    margin: 0;
+  }
+  .paragraph {
+    padding: 3rem 6rem;
+  }
+  footer {
+    padding: 2rem 15%;
+  }
+  footer hr {
+    margin: 0 15%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .container {
+    width: 80rem;
+  }
+}
