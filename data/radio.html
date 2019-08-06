@@ -25,36 +25,33 @@
     </nav>
   </header>
   <div class="block-header">
-    <img src="media/banner.jpg" alt="Banner">
-    <h1>Turbocharge your day.</h1>
+    <img src="media/banner.jpg" alt="Banner with Code">
+    <h1>Tune In.</h1>
   </div>
   <br>
   <div class="container">
     <section>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
-          <h2>Live Broadcasts & Music.</h2>
-          <p>Tune in for our live show, The Podcast Broadcast, every Wednesday from 12:25pm to 12:40pm. Or, just hang out and chill to some beats.</p>
-        </div>
+        <img id="cover" src="media/banner.jpg" alt="Cover Image"><br>
+        <h2>Now Playing: <span id="nowplaying">Playlist Name</span></h2>
+        <p>Artist: <span id="artist">Artist</span></p>
+        <p>Current Channel: <span id="currentChannel">N/A</span></p>
+        <audio id="radio" src="media/rick.mp3" loop preload="auto"></audio>
+        <button id="playbutton" onclick="play()">▶ Play</button>
       </div>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
-          <h2>Resource Concious.</h2>
-          <p>We can deliver quality sound at lower power and with less latency - both on your computer, and on our server.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
-          <h2>Exclusive to You.</h2>
-          <p>RadioLocal is only accessible from this WiFi network, which allows us to deliver higher quality sound to a group of dedicated listeners.</p>
+        <div class="text no-img">
+          <h2>Vote for Next Song</h2>
+          <button class="nextsongvote">Never Gonna Give You Up</button>
+          <button class="nextsongvote">Never Gonna Give You Up</button>
+          <button class="nextsongvote">Never Gonna Give You Up</button>
+          <br>
         </div>
       </div>
     </section>
     <section>
       <div class="card">
+        <h2>Bored? Switch Frequency.</h2>
         <section>
           <div class="card">
             <h2>The Good Ol' Days</h2>

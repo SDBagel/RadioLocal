@@ -1,45 +1,12 @@
-var startTime;
-var debounceStatisticsTime;
-
 var menu, nav;
-
-// Function modified from https://github.com/daneden/animate.css
-function animateCSS(element, animationName, isPermanent, callback) {
-  const node = document.querySelector(element);
-  node.classList.add("animated", animationName);
-
-  function handleAnimationEnd() {
-    if (!isPermanent)
-      node.classList.remove("animated", animationName);
-    node.removeEventListener("animationend", handleAnimationEnd);
-
-    if (typeof callback === "function") callback();
-  }
-
-  node.addEventListener("animationend", handleAnimationEnd);
-}
+var radio;
 
 document.addEventListener("DOMContentLoaded", function(event) {
   menu = document.getElementById("links");
   nav = document.getElementById("nav");
-
-  animateCSS("#rick", "fadeIn", false, null);
-  document.getElementById("rick").style.opacity = 1;
-  setTimeout(function() {
-    animateCSS("#message", "fadeIn", true, null);
-    animateCSS("#notification", "fadeInUp", true, null);
-    var content = document.getElementById("contentBlock");
-    content.style.display = "block";
-    animateCSS("#contentBlock", "fadeIn", true, null);
-  }, 1000);
-
-  startTime = new Date();
+  radio = document.getElementById("radio");
 
   loadStatistics();
-
-  setTimeout(function() {
-    animateCSS("#rick", "fadeOut", true, null);
-  }, 77000);
 });
 
 // Get stats from server
@@ -52,8 +19,8 @@ function loadStatistics() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var responseJSON = JSON.parse(this.responseText);
-      document.getElementById("visitors").innerHTML = responseJSON.v;
-      document.getElementById("avgtime").innerHTML = responseJSON.s + " seconds";
+      document.getElementById("nowplaying").innerText = responseJSON.t;
+      document.getElementById("artist").innerText = responseJSON.a;
     }
   };
   xhttp.open("GET", "persistent.txt", true);
@@ -87,3 +54,16 @@ function onResize() {
     nav.style.height = "";
   }
 };
+
+function play() {
+  radio.play();
+  radio.muted = false;
+  document.getElementById("playbutton").onclick = pause;
+  document.getElementById("playbutton").innerText = "⏸ Mute";
+}
+
+function pause() {
+  radio.muted = true;
+  document.getElementById("playbutton").onclick = play;
+  document.getElementById("playbutton").innerText = "▶ Play";
+}

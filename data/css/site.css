@@ -180,13 +180,6 @@ button {
   margin: 0;
 }
 
-.paragraph {
-  font-size: 1rem;
-  line-height: 2rem;
-  padding: 1rem 0.8rem;
-  text-align: center;
-}
-
 form {
   position: relative;
   text-align: left;
@@ -199,10 +192,6 @@ form input {
   width: 60%;
 }
 
-#register {
-  margin-top: 10%;
-}
-
 footer {
   background-color: #32292f;
   min-height: 10rem;
@@ -213,6 +202,10 @@ footer {
 
 footer > p {
   color: #93a3b1;
+}
+
+footer a:hover {
+  color: #f4f4f4;
 }
 
 @media screen and (min-width: 400px) {
@@ -265,11 +258,6 @@ footer > p {
   nav {
     padding: 0 6rem;
   }
-  .paragraph {
-    font-size: 1.2rem;
-    line-height: 2.2rem;
-    padding: 2rem 2rem;
-  }
 }
 
 @media screen and (min-width: 992px) {
@@ -302,9 +290,6 @@ footer > p {
   }
   .card .text {
     margin: 5% 10%;
-  }
-  .paragraph {
-    padding: 3rem 6rem;
   }
   footer {
     padding: 2rem 15%;

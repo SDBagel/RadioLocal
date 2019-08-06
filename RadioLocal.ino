@@ -5,7 +5,6 @@
 // Libraries for web server & database
 #include <ArduinoJson.h>
 #include <SPIFFS.h>
-#include <SD.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
@@ -17,7 +16,7 @@ const char* pswd = "2fa66a5417";
 AsyncWebServer server(80);
 const char* host = "radio";
 
-// Gets called on not found
+// On not found - checks SD card if file exists
 void handleError(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Page not found.");
 }
@@ -54,6 +53,9 @@ void setup() {
   server.on("/about", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/about.html","text/html");
   });
+  server.on("/radio", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/radio.html","text/html");
+  });
 
   // Routes to load site content
   server.on("/css/site.css", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -61,6 +63,11 @@ void setup() {
   });
   server.on("/js/site.js", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/js/site.js", "text/js");
+  });
+
+  // Routes to load metadata
+  server.on("/stats.txt", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/stats.txt", "text/plain");
   });
 
   // Routes to load media content
@@ -75,6 +82,11 @@ void setup() {
   });
   server.on("/media/rlinvertsmall.jpg", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/media/rlinvertsmall.jpg", "image/jpeg");
+  });
+
+  // Music
+  server.on("/media/rick.mp3", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/media/rick.mp3", "audio/mp3");
   });
   
   server.begin();
