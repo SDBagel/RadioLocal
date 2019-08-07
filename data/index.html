@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="description" content="Quality music and quality commentary - Daily at lunchtime, only on LAHS-Student.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/site.css">
   <script src="js/site.js"></script>
@@ -17,7 +18,7 @@
       <img id="logo" src="media/rlinvert.jpg" alt="Logo Big"></a>
       <button id="menu-button" onclick="showMenu()">Menu</button>
       <div id="links">
-        <a href="#"><button>Tune in Now</button></a>
+        <a href="radio"><button>Tune in Now</button></a>
         <a href="about">About</a>
         <a href="#">Schedule</a>
         <a href="#">Shows</a>
@@ -57,22 +58,22 @@
       <div class="card">
         <section>
           <div class="card">
-            <h2>The Good Ol' Days</h2>
-            <p>Now Playing: <span id="channelA"></span></p>
+            <h2><span id="channelAName">Channel One</span></h2>
+            <p>Now Playing: <span id="channelASong">Music</span></p>
             <a href="radio"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2>Modern Hits</h2>
-            <p>Now Playing: <span id="channelB"></span></p>
+            <h2><span id="channelBName">Channel Two</span></h2>
+            <p>Now Playing: <span id="channelBSong">Music</span></p>
             <a href="radio"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2>Editor's Choice</h2>
-            <p>Now Playing: <span id="channelC"></span></p>
+            <h2><span id="channelCName">Channel Three</span></h2>
+            <p>Now Playing: <span id="channelCSong">Music</span></p>
             <a href="radio"><button>Tune In</button></a>
           </div>
         </section>
-        <a href="#" onclick="loadStatistics()">🔄 Refresh</a>
+        <a href="#" onclick="loadPlaying(false)">🔄 Refresh</a>
       </div>
     </section>
   </div>
@@ -83,13 +84,6 @@
         <p><a href="about">About Us</a></p>
         <p><a href="terms">Privacy</a></p>
         <p><a href="terms">Terms of Use</a></p>
-      </div>
-      <hr>
-      <div>
-        <h3>Contact</h3>
-        <p><a href="mailto:sdbagel@gmail.com">Email</a></p>
-        <p><a href="https://github.com/SDProductions">GitHub</a></p>
-        <p><a href="https://github.com/SDBagel">SDBagel</a></p>
       </div>
     </section>
     <br>

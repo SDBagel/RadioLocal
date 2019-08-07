@@ -9,14 +9,106 @@
 #include <ESPAsyncWebServer.h>
 #include <SD.h>
 
-// Default STA settings
-const char* ssid = "Turbocharged";
-const char* pswd = "wholefoods";
+// SD card helpers
+bool sdInitialized = false;
 File dataFile;
+
+// Default STA settings
+const char* ssid = "SBG6700AC-77379";
+const char* pswd = "2fa66a5417";
+
 // Web server settings
 AsyncWebServer server(80);
 const char* host = "radio";
 
+// Song & Channel structs to store info
+struct Song {
+  int len;
+  String author;
+  String title;
+  File file;
+};
+
+struct Channel {
+  int sCount;
+  File dir;
+  Song currentSong;
+};
+
+// Channel 1, 2, & 3
+Channel a;
+Channel b;
+Channel c;
+
+// Metadata
+DynamicJsonDocument metaDoc(2048);
+
+// Timer helper
+unsigned long prevMs = 0;
+
+// Updates current song info for new connections
+String NowPlaying() {
+  DynamicJsonDocument doc(512);
+  
+  doc["a"] = a.currentSong.title;
+  doc["a_a"] = a.currentSong.author;
+  doc["a_t"] = a.sCount;
+  doc["a_u"] = a.currentSong.file.name();
+  doc["b"] = b.currentSong.title;
+  doc["b_a"] = b.currentSong.author;
+  doc["b_t"] = b.sCount;
+  doc["b_u"] = b.currentSong.file.name();
+  doc["c"] = c.currentSong.title;
+  doc["c_a"] = c.currentSong.author;
+  doc["c_t"] = c.sCount;
+  doc["c_u"] = c.currentSong.file.name();
+
+  String output = "";
+  serializeJson(doc, output);
+  return output;
+}
+
+// Gets the next valid MP3 file in a dir
+void GetNextSong(Channel& channel) {
+  if (channel.currentSong.file)
+    channel.currentSong.file.close();
+  
+  File query = channel.dir.openNextFile();
+  int tries = 0;
+  while(!((String)query.name()).endsWith(".mp3") && tries < 5) {
+    query = channel.dir.openNextFile();
+    if (!query) {
+      channel.dir.rewindDirectory();
+      query = channel.dir.openNextFile();
+    }
+    tries++;
+  }
+
+  const char* queryName = query.name();
+  Serial.print("Set next song for ");
+  Serial.print(channel.dir.name());
+  Serial.print(" to be "); 
+  Serial.println(queryName);
+  channel.currentSong.file = query;
+
+  channel.currentSong.len = metaDoc[queryName]["l"];
+  String author = metaDoc[queryName]["a"];
+  channel.currentSong.author = author;
+  String title = metaDoc[queryName]["n"];
+  channel.currentSong.title = title;
+  Serial.print(channel.currentSong.author + " ");
+  Serial.print(channel.currentSong.title + " ");
+  Serial.println(channel.currentSong.len);
+}
+
+void InitializeChannel(Channel& channel, const char* dir) {
+  // Get next song & set info
+  channel.sCount = 0;
+  channel.dir = SD.open(dir);
+  GetNextSong(channel);
+}
+
+// Get MIME type for SD
 String getMIME(String filename) {
   if (filename.endsWith(".png")) {
     return "image/png";
@@ -58,15 +150,45 @@ void setup() {
   }
   
   // Initialize SPIFFS
-  if(!SPIFFS.begin(true)){
+  if (!SPIFFS.begin(true)){
     Serial.println("An error has occurred while mounting SPIFFS!!!");
     return;
   }
 
   // Initialize SD card
-  if(!SD.begin(SS)) {
+  if (!SD.begin(SS)) {
     Serial.println("An error has occured mounting the SD card!!!!");
     Serial.println("The server will operate in a limited capacity.");
+  }
+  else {
+    sdInitialized = true;
+    
+    File channels = SD.open("/channels.txt");
+    if (!channels) Serial.println("Invalid SD config!");
+
+    String json;
+    while (channels.available()) {
+      json += char(channels.read());
+    }
+    channels.close();
+
+    StaticJsonDocument<512> doc;
+    deserializeJson(doc, json);
+
+    // Set meta information
+    File meta = SD.open("/meta.txt");
+    if (!meta) Serial.println("Invalid meta file!");
+    String metaJson;
+    while (meta.available()) {
+      metaJson += char(meta.read());
+    }
+    meta.close();
+    deserializeJson(metaDoc, metaJson);
+
+    // Init channels
+    InitializeChannel(a, doc["channelA"]);
+    InitializeChannel(b, doc["channelB"]);
+    InitializeChannel(c, doc["channelC"]);
   }
   
   // On 404 error
@@ -84,6 +206,9 @@ void setup() {
   });
 
   // Routes to load site content
+  server.on("/favicon.ico", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(SPIFFS, "/favicon.ico", "image/x-icon");
+  });
   server.on("/css/site.css", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/css/site.css", "text/css");
   });
@@ -92,8 +217,8 @@ void setup() {
   });
 
   // Routes to load metadata
-  server.on("/stats.txt", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/stats.txt", "text/plain");
+  server.on("/playing.txt", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "text/plain", NowPlaying());
   });
 
   // Routes to load media content
@@ -118,4 +243,28 @@ void setup() {
   server.begin();
 }
 
-void loop() { }
+void loop() { 
+  unsigned long currentMs = millis();
+
+  // Every second, check for song updates
+  if (currentMs - prevMs >= 1000 && sdInitialized) {
+    prevMs = currentMs;
+    a.sCount++;
+    b.sCount++;
+    c.sCount++;
+
+    // If current song is defined & count is over, get next song
+    if (a.sCount >= a.currentSong.len && a.currentSong.len != 0) {
+      GetNextSong(a); 
+      a.sCount = 0;
+    }
+    if (b.sCount >= b.currentSong.len && b.currentSong.len != 0) {
+      GetNextSong(b);
+      b.sCount = 0;
+    }
+    if (c.sCount >= c.currentSong.len && c.currentSong.len != 0) {
+      GetNextSong(c);
+      c.sCount = 0;
+    }
+  }
+}
