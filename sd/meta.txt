@@ -1,0 +1,17 @@
+{
+  "/ChannelOne/rick.mp3": {
+    "l": 212,
+    "a": "Rick Astley",
+    "n": "Never Gonna Give You Up" 
+  },
+  "/ChannelTwo/rick.mp3": {
+    "l": 212,
+    "a": "Rick Astley",
+    "n": "Never Gonna Give You Up" 
+  },
+  "/ChannelThree/rick.mp3": {
+    "l": 212,
+    "a": "Rick Astley",
+    "n": "Never Gonna Give You Up" 
+  }
+}

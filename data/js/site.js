@@ -2,6 +2,7 @@ var menu, nav;
 var radio;
 
 var nowPlayingJSON;
+var channelsJSON;
 var ch = "a";
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -9,8 +10,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   nav = document.getElementById("nav");
   radio = document.getElementById("radio");
 
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("c")) ch = urlParams.get("c");
+
   loadChannels();
-  loadPlaying(true);
+  loadPlaying(true, null);
 });
 
 // Get channels from server
@@ -18,10 +22,10 @@ function loadChannels() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      var responseJSON = JSON.parse(this.responseText);
-      document.getElementById("channelAName").innerText = responseJSON["channelAName"];
-      document.getElementById("channelBName").innerText = responseJSON["channelBName"];
-      document.getElementById("channelCName").innerText = responseJSON["channelCName"];
+      channelsJSON = JSON.parse(this.responseText);
+      document.getElementById("channelAName").innerText = channelsJSON["a"];
+      document.getElementById("channelBName").innerText = channelsJSON["b"];
+      document.getElementById("channelCName").innerText = channelsJSON["c"];
     }
   };
   xhttp.open("GET", "channels.txt", true);
@@ -29,7 +33,7 @@ function loadChannels() {
 }
 
 // Get currently playing songs, set player
-function loadPlaying(isCalledByScript) {
+function loadPlaying(isCalledByScript, callback) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -40,7 +44,8 @@ function loadPlaying(isCalledByScript) {
       if (isCalledByScript) {
         document.getElementById("nowplaying").innerText = nowPlayingJSON[ch];
         document.getElementById("artist").innerText = nowPlayingJSON[ch+"_a"];
-        document.getElementById("currentChannel").innerText = ch;
+        document.getElementById("currentChannel").innerText = channelsJSON[ch];
+        callback();
       }
     }
   };
@@ -66,9 +71,15 @@ function onResize() {
   }
 };
 
-function play() {
+function start() {
   document.getElementById("src").src = nowPlayingJSON[ch+"_u"];
+  radio.load();
+  radio.currentTime = nowPlayingJSON[ch+"_t"];
   radio.play();
+  play();
+}
+
+function play() {
   radio.muted = false;
   document.getElementById("playbutton").onclick = pause;
   document.getElementById("playbutton").innerText = "⏸ Mute";
@@ -78,4 +89,16 @@ function pause() {
   radio.muted = true;
   document.getElementById("playbutton").onclick = play;
   document.getElementById("playbutton").innerText = "▶ Play";
+}
+
+var loadNext = function retry() {
+  var currentSong = nowPlayingJSON[ch];
+  loadPlaying(true, function() {
+    if (currentSong == nowPlayingJSON[ch]) {
+      setTimeout(retry(), 1000);
+    }
+    else {
+      start();
+    }
+  });
 }

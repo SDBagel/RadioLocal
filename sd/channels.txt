@@ -1,0 +1,8 @@
+{
+  "channelA": "/ChannelOne",
+  "a": "Channel A Name",
+  "channelB": "/ChannelTwo",
+  "b": "Channel B Name",
+  "channelC": "/ChannelThree",
+  "c": "Channel C Name"
+}

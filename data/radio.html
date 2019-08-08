@@ -36,10 +36,10 @@
         <h2>Now Playing: <span id="nowplaying">Playlist Name</span></h2>
         <p>Artist: <span id="artist">Artist</span></p>
         <p>Current Channel: <span id="currentChannel">N/A</span></p>
-        <audio id="radio" preload="none">
-          <source id="src" src="media/rick.mp3"></source>
+        <audio id="radio" preload="none" onended="loadNext()">
+          <source id="src" src="media/rick.mp3">
         </audio>
-        <button id="playbutton" onclick="play()">▶ Play</button>
+        <button id="playbutton" onclick="start()">▶ Play</button>
       </div>
       <div class="card">
         <div class="text no-img">
