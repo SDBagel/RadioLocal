@@ -28,27 +28,19 @@
     <img src="media/banner.jpg" alt="Banner with Code">
     <h1>Tune In.</h1>
   </div>
+  <p id="error">Notice: Our audio database is experiencing some issues. We are currently playing a smaller selection of music.</p>
   <br>
   <div class="container">
     <section>
       <div class="card">
         <img id="cover" src="media/banner.jpg" alt="Cover Image"><br>
-        <h2>Now Playing: <span id="nowplaying">Playlist Name</span></h2>
+        <h2>Now Playing: <span id="nowplaying">Song Title</span></h2>
         <p>Artist: <span id="artist">Artist</span></p>
-        <p>Current Channel: <span id="currentChannel">N/A</span></p>
-        <audio id="radio" preload="none" onended="loadNext()">
+        <p>Current Channel: <span id="currentCh">N/A</span></p>
+        <audio id="radio" preload="auto" onended="play()">
           <source id="src" src="media/rick.mp3">
         </audio>
-        <button id="playbutton" onclick="start()">▶ Play</button>
-      </div>
-      <div class="card">
-        <div class="text no-img">
-          <h2>Vote for Next Song</h2>
-          <button class="nextsongvote">Never Gonna Give You Up</button>
-          <button class="nextsongvote">Never Gonna Give You Up</button>
-          <button class="nextsongvote">Never Gonna Give You Up</button>
-          <br>
-        </div>
+        <button id="playbutton" onclick="play()" onmouseover="loadPlaying(true)">▶ Play</button>
       </div>
     </section>
     <section>
@@ -56,19 +48,19 @@
         <h2>Bored? Switch Frequency.</h2>
         <section>
           <div class="card">
-            <h2><span id="channelAName">Channel One</span></h2>
-            <p>Now Playing: <span id="channelASong">Music</span></p>
+            <h2 id="a">%CHA%</h2>
+            <p>Now Playing: <span id="chASong">Music</span></p>
             <a href="radio"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2><span id="channelBName">Channel Two</span></h2>
-            <p>Now Playing: <span id="channelBSong">Music</span></p>
-            <a href="radio"><button>Tune In</button></a>
+            <h2 id="b">%CHB%</h2>
+            <p>Now Playing: <span id="chBSong">Music</span></p>
+            <a href="radio?c=b"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2><span id="channelCName">Channel Three</span></h2>
-            <p>Now Playing: <span id="channelCSong">Music</span></p>
-            <a href="radio"><button>Tune In</button></a>
+            <h2 id="c">%CHC%</h2>
+            <p>Now Playing: <span id="chCSong">Music</span></p>
+            <a href="radio?c=c"><button>Tune In</button></a>
           </div>
         </section>
         <a href="#" onclick="loadPlaying(false)">🔄 Refresh</a>

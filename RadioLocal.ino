@@ -30,6 +30,7 @@ struct Song {
 };
 
 struct Channel {
+  String pubName;
   int sCount;
   File dir;
   Song currentSong;
@@ -41,14 +42,14 @@ Channel b;
 Channel c;
 
 // Metadata
-DynamicJsonDocument metaDoc(2048);
+DynamicJsonDocument metaDoc(8192);
 
 // Timer helper
 unsigned long prevMs = 0;
 
 // Updates current song info for new connections
 String NowPlaying() {
-  DynamicJsonDocument doc(512);
+  StaticJsonDocument<512> doc;
   
   doc["a"] = a.currentSong.title;
   doc["a_a"] = a.currentSong.author;
@@ -75,7 +76,9 @@ void GetNextSong(Channel& channel) {
   
   File query = channel.dir.openNextFile();
   int tries = 0;
-  while(!((String)query.name()).endsWith(".mp3") && tries < 5) {
+  while(!(((String)query.name()).endsWith(".mp3") || 
+        ((String)query.name()).endsWith(".ogg")) 
+        && tries < 5) {
     query = channel.dir.openNextFile();
     if (!query) {
       channel.dir.rewindDirectory();
@@ -101,8 +104,9 @@ void GetNextSong(Channel& channel) {
   Serial.println(channel.currentSong.len);
 }
 
-void InitializeChannel(Channel& channel, const char* dir) {
+void InitializeChannel(Channel& channel, const char* dir, const char* pub) {
   // Get next song & set info
+  channel.pubName = pub;
   channel.sCount = 0;
   channel.dir = SD.open(dir);
   GetNextSong(channel);
@@ -116,65 +120,75 @@ String getMIME(String filename) {
     return "image/jpeg";
   } else if (filename.endsWith(".mp3")) {
     return "audio/mp3";
+  } else if (filename.endsWith(".ogg")) {
+    return "audio/ogg";
   }
+  
   return "text/plain";
 }
 
 // On not found - checks SD card if file exists
 void handleError(AsyncWebServerRequest *request) {
-  dataFile = SD.open(request->url());
-  if (dataFile) {
-    request->send(getMIME(request->url()), dataFile.size(), 
-      [](uint8_t *buffer, size_t maxLen, size_t index) -> size_t {
-      return dataFile.read(buffer, maxLen); });
-    return;
-  } 
+  if (sdInitialized) {
+    dataFile.close();
+    dataFile = SD.open(request->url());
+    if (dataFile) {
+      request->send(getMIME(request->url()), dataFile.size(), 
+        [](uint8_t *buffer, size_t maxLen, size_t index) -> size_t {
+        return dataFile.read(buffer, maxLen); });
+      return;
+    } 
+  }
   
   request->send(404, "text/plain", "Page not found.");
 }
 
+String processor(const String& var) {
+  if(var == "CHA") return a.pubName;
+  if(var == "CHB") return b.pubName;
+  if(var == "CHC") return c.pubName;
+  if(var == "CHAS") return a.currentSong.title;
+  if(var == "CHBS") return b.currentSong.title;
+  if(var == "CHCS") return c.currentSong.title;
+  return String();
+}
+
 void setup() {
+  // Begin serial
   Serial.begin(115200);
 
   // Connect WiFi
   WiFi.mode(WIFI_STA);
   if (!WiFi.begin(ssid, pswd)) {
-    Serial.println("Error connecting to WiFi!");
-    return;
-  }
+    Serial.println("Error connecting to WiFi!"); return; }
 
   // Begin MDNS
   if (!MDNS.begin(host)) {
-    Serial.println("Error setting up MDNS responder!!");
-    return;
-  }
+    Serial.println("Error setting up MDNS!"); return; }
   
   // Initialize SPIFFS
   if (!SPIFFS.begin(true)){
-    Serial.println("An error has occurred while mounting SPIFFS!!!");
-    return;
-  }
+    Serial.println("Error mounting SPIFFS!"); return; }
 
   // Initialize SD card
   if (!SD.begin(SS)) {
-    Serial.println("An error has occured mounting the SD card!!!!");
+    Serial.println("Error mounting the SD card!");
     Serial.println("The server will operate in a limited capacity.");
   }
   else {
     sdInitialized = true;
-    
     File channels = SD.open("/channels.txt");
     if (!channels) Serial.println("Invalid SD config!");
-
+  
     String json;
     while (channels.available()) {
       json += char(channels.read());
     }
     channels.close();
-
+  
     StaticJsonDocument<512> doc;
     deserializeJson(doc, json);
-
+  
     // Set meta information
     File meta = SD.open("/meta.txt");
     if (!meta) Serial.println("Invalid meta file!");
@@ -184,11 +198,11 @@ void setup() {
     }
     meta.close();
     deserializeJson(metaDoc, metaJson);
-
+  
     // Init channels
-    InitializeChannel(a, doc["channelA"]);
-    InitializeChannel(b, doc["channelB"]);
-    InitializeChannel(c, doc["channelC"]);
+    InitializeChannel(a, doc["channelA"], doc["a"]);
+    InitializeChannel(b, doc["channelB"], doc["b"]);
+    InitializeChannel(c, doc["channelC"], doc["c"]);
   }
   
   // On 404 error
@@ -196,13 +210,13 @@ void setup() {
   
   // Pages
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/index.html","text/html");
+    request->send(SPIFFS, "/index.html", String(), false, processor);
   });
   server.on("/about", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/about.html","text/html");
+    request->send(SPIFFS, "/about.html", "text/html");
   });
   server.on("/radio", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/radio.html","text/html");
+    request->send(SPIFFS, "/radio.html", String(), false, processor);
   });
 
   // Routes to load site content

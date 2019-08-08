@@ -8,7 +8,6 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/site.css">
-  <script src="js/site.js"></script>
 </head>
 <body onresize="onResize()">
   <header>
@@ -33,22 +32,19 @@
   <div class="container">
     <section>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
-          <h2>Live Broadcasts & Music.</h2>
+        <div class="text no-img">
+          <h2>Live All Day.</h2>
           <p>Tune in for our live show, The Podcast Broadcast, every Wednesday from 12:25pm to 12:40pm. Or, just hang out and chill to some beats.</p>
         </div>
       </div>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
+        <div class="text no-img">
           <h2>Resource Concious.</h2>
           <p>We can deliver quality sound at lower power and with less latency - both on your computer, and on our server.</p>
         </div>
       </div>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
+        <div class="text no-img">
           <h2>Exclusive to You.</h2>
           <p>RadioLocal is only accessible from this WiFi network, which allows us to deliver higher quality sound to a group of dedicated listeners.</p>
         </div>
@@ -58,22 +54,21 @@
       <div class="card">
         <section>
           <div class="card">
-            <h2><span id="channelAName">Channel One</span></h2>
-            <p>Now Playing: <span id="channelASong">Music</span></p>
+            <h2>%CHA%</h2>
+            <p>Now Playing: %CHAS%</p>
             <a href="radio"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2><span id="channelBName">Channel Two</span></h2>
-            <p>Now Playing: <span id="channelBSong">Music</span></p>
-            <a href="radio"><button>Tune In</button></a>
+            <h2>%CHB%</h2>
+            <p>Now Playing: %CHBS%</p>
+            <a href="radio?c=b"><button>Tune In</button></a>
           </div>
           <div class="card">
-            <h2><span id="channelCName">Channel Three</span></h2>
-            <p>Now Playing: <span id="channelCSong">Music</span></p>
-            <a href="radio"><button>Tune In</button></a>
+            <h2>%CHC%</h2>
+            <p>Now Playing: %CHCS%</p>
+            <a href="radio?c=c"><button>Tune In</button></a>
           </div>
         </section>
-        <a href="#" onclick="loadPlaying(false)">🔄 Refresh</a>
       </div>
     </section>
   </div>

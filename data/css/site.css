@@ -71,6 +71,7 @@ nav button:hover {
 .block-header > img {
   filter: blur(10px);
   min-width: 100%;
+  min-height: 25rem;
 }
 
 .block-header h1 {
@@ -94,6 +95,14 @@ nav button:hover {
   margin: auto;
   margin-top: 0.1rem;
   vertical-align: middle;
+}
+
+#error {
+  display: none;
+  background-color: #ddbb00;
+  margin: 0;
+  padding: 0.5rem 0;
+  text-align: center;
 }
 
 .container {
@@ -176,7 +185,7 @@ button {
 }
 
 .card .text {
-  color: #93a3b1;
+  color: #738391;
   margin: 0;
 }
 
@@ -201,7 +210,7 @@ footer {
 }
 
 footer > p {
-  color: #93a3b1;
+  color: #738391;
 }
 
 footer a:hover {
@@ -216,7 +225,7 @@ footer a:hover {
     margin-left: 6rem;
   }
   .no-img {
-    margin: 0 10% !important;
+    margin: 5% 10% !important;
   }
   form input {
     width: 75%;

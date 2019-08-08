@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/site.css">
-  <script src="js/site.js"></script>
 </head>
 <body onresize="onResize()">
   <header>
@@ -28,6 +27,7 @@
     <img src="media/banner.jpg" alt="Banner">
     <h1><img src="media/rl.jpg" alt="Logo"></h1>
   </div>
+  <p id="error">Notice: Our audio database is experiencing some issues. We are currently playing a smaller selection of music.</p>
   <br>
   <div class="container">
     <div class="header">
@@ -35,24 +35,43 @@
     </div>
     <section>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
+        <div class="text no-img">
           <h2>Locally Hosted.</h2>
           <p>RadioLocal is just that - local radio. We host this website on campus with hardware that's smaller and uses less power than your smartphone.</p>
         </div>
       </div>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
+        <div class="text no-img">
           <h2>Precision Engineering.</h2>
           <p>This website and the code behind it that makes it tick was custom designed to make your experience as fluid as possible, be it on mobile, laptop, or desktop.</p>
         </div>
       </div>
       <div class="card">
-        <img src="media/banner.jpg" alt="">
-        <div class="text">
+        <div class="text no-img">
           <h2>Pirate Radio.</h2>
           <p>We totally didn't get permission. #madlads</p>
+        </div>
+      </div>
+    </section>
+    <div class="header">
+      <h2>High Quality Sound</h2>
+    </div>
+    <section>
+      <div class="card">
+        <div class="text no-img">
+          <p>We deliver the best experience to you. Conventional streaming sites like Youtube stream audio, generally, at a maximum of 160kbps or 192kbps (kilobytes per second). Soundcloud streams audio at only 64kbps, although they use a better audio codec, meaning better sound at lower data rates (unless you pay for Soundcloud Go).</p>
+          <br>
+          <p>However, our since our site isn't open to the public and is only accessible on this WiFi network, we can deliver much higher bandwith at lower power without breaking the bank on server technology. We stream audio at up to <b>500kbps</b> on some of our channels, meaning you get the best possible audio.</p>
+        </div>
+      </div>
+    </section>
+    <div class="header">
+      <h2>Behind the Scenes</h2>
+    </div>
+    <section>
+      <div class="card">
+        <div class="text no-img">
+          <p>We have some cool stuff going on in the background - our server runs on a split-system increasing performance and maintainability, meaning more content for you. The site is directly hosted on flash memory - if our servers are running, our site is. On the other hand, since our audio library needs large storage and more accessibility for us to maintain it, it gets stored on an external flash disk connected to the server. In case our audio library is inaccessible, the site will enter a fallback cycle and play music stored on the flash chip - however, this is at a much reduced quality. You'll see a notification when this happens. Neato!</p>
         </div>
       </div>
     </section>
