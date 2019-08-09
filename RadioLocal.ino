@@ -253,6 +253,23 @@ void setup() {
   server.on("/media/rick.mp3", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(SPIFFS, "/media/rick.mp3", "audio/mp3");
   });
+
+  // DJ
+  server.on("/a/next", HTTP_GET, [](AsyncWebServerRequest *request) {
+    a.sCount = 0;
+    GetNextSong(a);
+    request->send(418, "text/plain", "Request sent to teapot using HTCPCP but executed successfully.");
+  });
+  server.on("/b/next", HTTP_GET, [](AsyncWebServerRequest *request) {
+    b.sCount = 0;
+    GetNextSong(b);
+    request->send(418, "text/plain", "Request sent to teapot using HTCPCP but executed successfully.");
+  });
+  server.on("/c/next", HTTP_GET, [](AsyncWebServerRequest *request) {
+    b.sCount = 0;
+    GetNextSong(c);
+    request->send(418, "text/plain", "Request sent to teapot using HTCPCP but executed successfully.");
+  });
   
   server.begin();
 }

@@ -47,6 +47,7 @@ function loadPlaying(isCalledByScript) {
         document.getElementById("nowplaying").innerText = nowPlayingJSON[ch];
         document.getElementById("artist").innerText = nowPlayingJSON[ch+"_a"];
         document.getElementById("currentCh").innerText = document.getElementById(ch).innerText;
+        document.getElementById("currentChHead").innerText = document.getElementById(ch).innerText;
         document.getElementById("src").src = nowPlayingJSON[ch+"_u"];
         radio.load();
       }
@@ -78,6 +79,7 @@ function onResize() {
 
 function play() {
   playbutton.onmouseover = "";
+  radio.load();
   radio.play();
   radio.currentTime = nowPlayingJSON[ch+"_t"];
   resume();
@@ -93,4 +95,14 @@ function pause() {
   radio.muted = true;
   playbutton.onclick = play;
   playbutton.innerText = "▶ Unmute";
+}
+
+function loadNext() {
+  loadPlaying(true);
+  setTimeout(() => {
+    var isMuted = false;
+    if (playbutton.onclick === play) isMuted = true;
+    play();
+    if (isMuted) pause();
+  }, 1000);
 }

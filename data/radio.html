@@ -25,22 +25,23 @@
     </nav>
   </header>
   <div class="block-header">
-    <img src="media/banner.jpg" alt="Banner with Code">
-    <h1>Tune In.</h1>
+    <img src="media/banner.jpg" alt="Banner">
+    <h1 id="currentChHead">%CHA%</h1>
   </div>
   <p id="error">Notice: Our audio database is experiencing some issues. We are currently playing a smaller selection of music.</p>
   <br>
   <div class="container">
     <section>
       <div class="card">
-        <img id="cover" src="media/banner.jpg" alt="Cover Image"><br>
-        <h2>Now Playing: <span id="nowplaying">Song Title</span></h2>
-        <p>Artist: <span id="artist">Artist</span></p>
-        <p>Current Channel: <span id="currentCh">N/A</span></p>
-        <audio id="radio" preload="auto" onended="play()">
-          <source id="src" src="media/rick.mp3">
-        </audio>
-        <button id="playbutton" onclick="play()" onmouseover="loadPlaying(true)">▶ Play</button>
+        <div class="no-img">
+          <h2>Now Playing: <span id="nowplaying">Song Title</span></h2>
+          <p>Artist: <span id="artist">Artist</span></p>
+          <p>Current Channel: <span id="currentCh">N/A</span></p>
+          <audio id="radio" preload="auto" onended="loadNext()">
+            <source id="src" src="media/rick.mp3">
+          </audio>
+          <button id="playbutton" onclick="play()" onmouseover="loadPlaying(true)">▶ Play</button>
+        </div>
       </div>
     </section>
     <section>
