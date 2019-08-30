@@ -14,8 +14,8 @@ bool sdInitialized = false;
 File dataFile;
 
 // Default STA settings
-const char* ssid = "SBG6700AC-77379";
-const char* pswd = "2fa66a5417";
+const char* ssid = "";
+const char* pswd = "";
 
 // Web server settings
 AsyncWebServer server(80);
@@ -157,15 +157,6 @@ void setup() {
   // Begin serial
   Serial.begin(115200);
 
-  // Connect WiFi
-  WiFi.mode(WIFI_STA);
-  if (!WiFi.begin(ssid, pswd)) {
-    Serial.println("Error connecting to WiFi!"); return; }
-
-  // Begin MDNS
-  if (!MDNS.begin(host)) {
-    Serial.println("Error setting up MDNS!"); return; }
-  
   // Initialize SPIFFS
   if (!SPIFFS.begin(true)){
     Serial.println("Error mounting SPIFFS!"); return; }
@@ -188,6 +179,19 @@ void setup() {
   
     StaticJsonDocument<512> doc;
     deserializeJson(doc, json);
+
+    File wConfig = SD.open("/wifi.txt");
+    if (wConfig) {
+      String cfg;
+      while (wConfig.available()) {
+        cfg += char(wConfig.read());
+      }
+
+      StaticJsonDocument<512> wDoc;
+      deserializeJson(wDoc, cfg);
+      ssid = wDoc["ssid"];
+      pswd = wDoc["pswd"];
+    }
   
     // Set meta information
     File meta = SD.open("/meta.txt");
@@ -204,6 +208,15 @@ void setup() {
     InitializeChannel(b, doc["channelB"], doc["b"]);
     InitializeChannel(c, doc["channelC"], doc["c"]);
   }
+
+  // Connect WiFi
+  WiFi.mode(WIFI_STA);
+  if (!WiFi.begin(ssid, pswd)) {
+    Serial.println("Error connecting to WiFi!"); return; }
+
+  // Begin MDNS
+  if (!MDNS.begin(host)) {
+    Serial.println("Error setting up MDNS!"); return; }
   
   // On 404 error
   server.onNotFound(handleError);
